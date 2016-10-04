@@ -20,3 +20,4 @@ apps/.DS_Store
 apps/verapi/.DS_Store
 apps/verapi/priv/.DS_Store
 apps/verapi/priv/static/.DS_Store
+/run_erl.log
