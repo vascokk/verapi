@@ -1,0 +1,1 @@
+[kernel,stdlib,fs,ranch,compiler,syntax_tools,asn1,idna,mimerl,certifi,metrics,inets,gproc,crypto,cowlib,public_key,cowboy,ssl,n2o,ssl_verify_fun,hackney,verapi,active,erlydtl,jsone,mad,nitro,sh]

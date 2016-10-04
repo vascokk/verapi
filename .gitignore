@@ -1,0 +1,22 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Erlang template
+.eunit
+deps
+*.o
+*.beam
+*.plt
+erl_crash.dump
+ebin
+rel/example_project
+.concrete/DEV_MODE
+.rebar
+/erlang.log.1
+/misc.json
+/*.iml
+/verapi
+/.idea/
+.idea/
+apps/.DS_Store
+apps/verapi/.DS_Store
+apps/verapi/priv/.DS_Store
+apps/verapi/priv/static/.DS_Store

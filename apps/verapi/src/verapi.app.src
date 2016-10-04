@@ -1,0 +1,7 @@
+{application, verapi,
+  [{description, "Vera remote control via RPi"},
+   {vsn, "1.0"},
+   {registered, []},
+   {applications, [kernel, stdlib, n2o, hackney]},
+   {mod, { verapi, []}},
+   {env, []} ]}.
