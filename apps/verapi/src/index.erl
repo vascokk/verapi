@@ -53,13 +53,20 @@ body() ->
                     body="Not armed"
                   },
                   #panel{id = pinpanel}
-            ]},
+            ]}
     %%#textbox{id=message},
     %%#button{id=send,body="Chat",postback=chat,source=[message]},ge]},
-    wf:wire(#alert{text = "Hello!"})
+    %%wf:wire(#alert{text = "Hello!"})
   ].
 
-event(init) -> wf:reg(pidev);
+event(init) ->
+  wf:reg(pidev),
+  case os:type() of
+    {unix,darwin} -> wf:session(audio_player, "afplay "); %%dev
+    {unix,linux} -> wf:session(audio_player, "omxplayer ");
+    _ -> wf:session(audio_player, wf:session(audio_player))
+  end,
+  os:cmd(wf:session(audio_player) ++ wf:config(vera_client, audio_hello));
 %%event(chat) -> wf:send(pidev,{client,{peer(),message()}});
 %%event({client,{P,M}}) -> wf:insert_bottom(history,#panel{id=history,body=[P,": ",M,#br{}]});
 event({keypad, Key}) ->
@@ -67,17 +74,16 @@ event({keypad, Key}) ->
             undefined -> wf:session(entry, Key), Key;
             Prev when is_list(Prev) -> wf:session(entry, Prev ++ Key), Prev ++ Key
           end,
-  %%wf:wire(#alert{text="Keypad : " ++ wf:session(pin)});
   %%wf:send(pidev,{client,{peer(), wf:session(pin)}});
   wf:update(pinpanel,#panel{id=pinpanel,body=[wf:session(entry)]}),
-  n2o_log:info(?MODULE, "Entry: ~p",[Entry]),
-  n2o_log:info(?MODULE, "Last key: ~p",[hd(lists:reverse(Entry))]),
+%%  n2o_log:info(?MODULE, "Entry: ~p",[Entry]),
+%%  n2o_log:info(?MODULE, "Last key: ~p",[hd(lists:reverse(Entry))]),
   case hd(lists:reverse(Entry)) of
     $# -> set_status(Entry),
-           wf:session(entry, "");
+           wf:session(entry, ""),
+           wf:update(pinpanel,#panel{id=pinpanel,body=[""]});
     _ -> ok
   end;
-%%event(one) -> wf:send(pidev,{client,{peer(),message()}});
 event(Event) -> wf:info(?MODULE,"Unknown Event: ~p~n",[Event]).
 
 
@@ -97,7 +103,7 @@ disarm(Pin) ->
                                     body="Not armed",
                                     class=["panel-footer"],
                                     style="color: green; padding: 3px;width: 100px; margin: 0 auto;text-align: center;"});
-    _ -> wrongpin
+    _ -> os:cmd(wf:session(audio_player) ++ wf:config(vera_client, audio_wrongpin))
   end.
 
 arm(Pin) ->
@@ -108,7 +114,13 @@ arm(Pin) ->
     style="color: red; padding: 3px;width: 100px; margin: 0 auto;text-align: center;"}).
 
 run_scene(security_on) ->
-  vera_client:security_alarm_status(armed);
+  case vera_client:security_alarm_status(armed) of
+    {ok, _, _, _} -> os:cmd(wf:session(audio_player) ++ wf:config(vera_client, audio_armed));
+    {error, _} -> os:cmd(wf:session(audio_player) ++ wf:config(vera_client, audio_sorry))
+  end;
 run_scene(security_off) ->
-  vera_client:security_alarm_status(disarmed).
+  case vera_client:security_alarm_status(disarmed) of
+    {ok, _, _, _} -> os:cmd(wf:session(audio_player) ++ wf:config(vera_client, audio_disarmed));
+    {error, _} -> os:cmd(wf:session(audio_player) ++ wf:config(vera_client, audio_sorry))
+  end.
 

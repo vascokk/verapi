@@ -26,5 +26,5 @@ security_alarm_status(Status) ->
   Headers = [],
   Payload = <<>>,
   Options = [],
-  {ok, _, _, _} = hackney:request(Method, list_to_binary(URL),
+  hackney:request(Method, list_to_binary(URL),
                   Headers, Payload, Options).
