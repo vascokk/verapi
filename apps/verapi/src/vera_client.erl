@@ -10,7 +10,7 @@
 -author("vasco").
 
 %% API
--export([security_alarm_status/1]).
+-export([security_alarm_status/1, run_scene/1]).
 
 security_alarm_status(Status) ->
   Method = get,
@@ -28,3 +28,14 @@ security_alarm_status(Status) ->
   Options = [],
   hackney:request(Method, list_to_binary(URL),
                   Headers, Payload, Options).
+
+run_scene(security_on) ->
+  case vera_client:security_alarm_status(armed) of
+    {ok, _, _, _} -> os:cmd(wf:session(audio_player) ++ wf:config(vera_client, audio_armed));
+    {error, _} -> os:cmd(wf:session(audio_player) ++ wf:config(vera_client, audio_sorry))
+  end;
+run_scene(security_off) ->
+  case vera_client:security_alarm_status(disarmed) of
+    {ok, _, _, _} -> os:cmd(wf:session(audio_player) ++ wf:config(vera_client, audio_disarmed));
+    {error, _} -> os:cmd(wf:session(audio_player) ++ wf:config(vera_client, audio_sorry))
+  end.

@@ -98,7 +98,7 @@ set_status(Entry) ->
 
 disarm(Pin) ->
   case Pin =:= wf:session(pin) of
-    true -> run_scene(security_off),
+    true -> vera_client:run_scene(security_off),
             wf:session(status, not_armed),
             wf:update(status,#panel{id=status,
                                     body="Not armed",
@@ -110,20 +110,11 @@ disarm(Pin) ->
 arm(Pin) ->
   wf:session(pin, Pin),
   wf:session(status, armed),
-  run_scene(security_on),
+  vera_client:run_scene(security_on),
   wf:update(status,#panel{id=status,body="ARMED", class=["panel-footer"],
     style="color: red; padding: 3px;width: 100px; margin: 0 auto;text-align: center;"}).
 
-run_scene(security_on) ->
-  case vera_client:security_alarm_status(armed) of
-    {ok, _, _, _} -> os:cmd(wf:session(audio_player) ++ wf:config(vera_client, audio_armed));
-    {error, _} -> os:cmd(wf:session(audio_player) ++ wf:config(vera_client, audio_sorry))
-  end;
-run_scene(security_off) ->
-  case vera_client:security_alarm_status(disarmed) of
-    {ok, _, _, _} -> os:cmd(wf:session(audio_player) ++ wf:config(vera_client, audio_disarmed));
-    {error, _} -> os:cmd(wf:session(audio_player) ++ wf:config(vera_client, audio_sorry))
-  end.
+
 
 set_default_player() ->
   case os:type() of
