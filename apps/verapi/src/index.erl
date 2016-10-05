@@ -6,9 +6,6 @@
 peer()    -> wf:to_list(wf:peer(?REQ)).
 %%message() -> wf:js_escape(wf:html_encode(wf:to_list(wf:q(message)))).
 main() ->
-  wf:session(pin, undefined),
-  wf:session(entry, undefined),
-  wf:session(status, not_armed),
   #dtl{file = "index", app = verapi, bindings = [{body, body()}]}.
 body() ->
   Center = "margin:10 auto; width: 50%; border: 3px solid; padding: 10px;",
@@ -61,10 +58,12 @@ body() ->
 
 event(init) ->
   wf:reg(pidev),
-  case os:type() of
-    {unix,darwin} -> wf:session(audio_player, "afplay "); %%dev
-    {unix,linux} -> wf:session(audio_player, "omxplayer ");
-    _ -> wf:session(audio_player, wf:session(audio_player))
+  wf:session(pin, undefined),
+  wf:session(entry, undefined),
+  wf:session(status, not_armed),
+  case wf:config(vera_client, audio_player) of
+    undefined -> set_default_player();
+    Player -> wf:session(audio_player, Player ++ " ")
   end,
   os:cmd(wf:session(audio_player) ++ wf:config(vera_client, audio_hello));
 %%event(chat) -> wf:send(pidev,{client,{peer(),message()}});
@@ -124,3 +123,9 @@ run_scene(security_off) ->
     {error, _} -> os:cmd(wf:session(audio_player) ++ wf:config(vera_client, audio_sorry))
   end.
 
+set_default_player() ->
+  case os:type() of
+    {unix,darwin} -> wf:session(audio_player, "afplay "); %%for testing
+    {unix,linux} -> wf:session(audio_player, "omxplayer "); %% on RPi
+    OS -> error(io:format("Cannot set audio player for OS type ~p. Please, define audio_player in the sys.config file!", [OS]))
+end.
