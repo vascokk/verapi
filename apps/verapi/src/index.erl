@@ -10,6 +10,8 @@ main() ->
 body() ->
   Center = "margin:10 auto; width: 50%; border: 3px solid; padding: 10px;",
   BtnStyle = "padding: 20px;",
+  BtnClass = [btn, "btn-default", "btn-primary", "btn-lg"],
+  BtnPanelStyle = "padding: 3px;width: 50%;margin: 0 auto;",
   [#panel{
           id = keypad,
           class=["panel", "panel-default"], 
@@ -17,33 +19,33 @@ body() ->
           body = [
                   #panel{
                      class=["panel-body"],
-                     style="padding: 3px;width: 50%;margin: 0 auto;",
+                     style=BtnPanelStyle,
                      body = [
-                        #button{id = '1', style=BtnStyle, class=[btn, "btn-default", "btn-primary", "btn-lg"], body = "1", postback = {keypad, "1"}, source = []},
-                        #button{id = '2', style=BtnStyle, class=[btn, "btn-default", "btn-primary", "btn-lg"], body = "2", postback = {keypad, "2"}, source = []},
-                        #button{id = '3', style=BtnStyle, class=[btn, "btn-default", "btn-primary", "btn-lg"], body = "3", postback = {keypad, "3"}, source = []}
+                        #button{id = '1', style=BtnStyle, class=BtnClass, body = "1", postback = {keypad, "1"}, source = []},
+                        #button{id = '2', style=BtnStyle, class=BtnClass, body = "2", postback = {keypad, "2"}, source = []},
+                        #button{id = '3', style=BtnStyle, class=BtnClass, body = "3", postback = {keypad, "3"}, source = []}
                      ]},
                   #panel{
                     class=["panel-body"],
-                    style="padding: 3px;width: 50%;margin: 0 auto;",
+                    style=BtnPanelStyle,
                       body = [
-                        #button{id = '4', style=BtnStyle, class=[btn, "btn-default", "btn-primary", "btn-lg"], body = "4", postback = {keypad, "4"}, source = []},
-                        #button{id = '5', style=BtnStyle, class=[btn, "btn-default", "btn-primary", "btn-lg"], body = "5", postback = {keypad, "5"}, source = []},
-                        #button{id = '6', style=BtnStyle, class=[btn, "btn-default", "btn-primary", "btn-lg"], body = "6", postback = {keypad, "6"}, source = []}
+                        #button{id = '4', style=BtnStyle, class=BtnClass, body = "4", postback = {keypad, "4"}, source = []},
+                        #button{id = '5', style=BtnStyle, class=BtnClass, body = "5", postback = {keypad, "5"}, source = []},
+                        #button{id = '6', style=BtnStyle, class=BtnClass, body = "6", postback = {keypad, "6"}, source = []}
                       ]},
                   #panel{class=["panel-body"],
-                    style="padding: 3px;width: 50%;margin: 0 auto;",
+                    style=BtnPanelStyle,
                       body = [
-                        #button{id = '7', style=BtnStyle, class=[btn, "btn-default", "btn-primary", "btn-lg"], body = "7", postback = {keypad, "7"}, source = []},
-                        #button{id = '8', style=BtnStyle, class=[btn, "btn-default", "btn-primary", "btn-lg"], body = "8", postback = {keypad, "8"}, source = []},
-                        #button{id = '9', style=BtnStyle, class=[btn, "btn-default", "btn-primary", "btn-lg"], body = "9", postback = {keypad, "9"}, source = []}
+                        #button{id = '7', style=BtnStyle, class=BtnClass, body = "7", postback = {keypad, "7"}, source = []},
+                        #button{id = '8', style=BtnStyle, class=BtnClass, body = "8", postback = {keypad, "8"}, source = []},
+                        #button{id = '9', style=BtnStyle, class=BtnClass, body = "9", postback = {keypad, "9"}, source = []}
                       ]},
                   #panel{class=["panel-body"],
-                    style="padding: 3px;width: 50%;margin: 0 auto;",
+                    style=BtnPanelStyle,
                       body = [
-                        #button{id = '#', style=BtnStyle, class=[btn, "btn-default", "btn-primary", "btn-lg"], body = "#", postback = {keypad, "#"}, source = []},
-                        #button{id = '0', style=BtnStyle, class=[btn, "btn-default", "btn-primary", "btn-lg"], body = "0", postback = {keypad, "0"}, source = []},
-                        #button{id = '*', style=BtnStyle, class=[btn, "btn-default", "btn-primary", "btn-lg"], body = "*", postback = {keypad, "*"}, source = []}
+                        #button{id = '#', style=BtnStyle, class=BtnClass, body = "#", postback = {keypad, "#"}, source = []},
+                        #button{id = '0', style=BtnStyle, class=BtnClass, body = "0", postback = {keypad, "0"}, source = []},
+                        #button{id = '*', style=BtnStyle, class=BtnClass, body = "*", postback = {keypad, "*"}, source = []}
                       ]},
                   #panel{id = status,
                     class=["panel-footer"], style="color: green;padding: 3px;width: 100px; margin: 0 auto;text-align: center;",
